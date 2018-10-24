@@ -51,9 +51,7 @@ def parse_args():
 if __name__ == '__main__':
     args = parse_args()
     for infile in args.files:
-        line_no = 0
-        for line in infile:
-            line_no += 1
+        for line_no, line in enumerate(infile, 1):
             m = list(args.regex.finditer(line))
             if len(m) > 0:
                 args.format(infile.name, line_no, m)
