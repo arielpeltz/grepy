@@ -98,13 +98,13 @@ func lineMatcher(str string, in <-chan lineInfo) <-chan lineInfo {
 	regex := regexp.MustCompile(str)
 	out := make(chan lineInfo)
 	go func() {
+		defer close(out)
 		for li := range in {
 			li.matches = regex.FindAllStringIndex(li.line, -1)
 			if len(li.matches) > 0 {
 				out <- li
 			}
 		}
-		defer close(out)
 	}()
 
 	return out
@@ -113,10 +113,10 @@ func lineMatcher(str string, in <-chan lineInfo) <-chan lineInfo {
 func machineFormat(in <-chan lineInfo) <-chan string {
 	out := make(chan string)
 	go func() {
+		defer close(out)
 		for li := range in {
 			out <- fmt.Sprintf("%v:%v:%v", li.filename, li.lineNum, li.line)
 		}
-		defer close(out)
 	}()
 
 	return out
@@ -125,6 +125,7 @@ func machineFormat(in <-chan lineInfo) <-chan string {
 func colorFormat(in <-chan lineInfo) <-chan string {
 	out := make(chan string)
 	go func() {
+		defer close(out)
 		for li := range in {
 			str := fmt.Sprintf("%v (%v) ", li.filename, li.lineNum)
 			last := 0
@@ -134,7 +135,6 @@ func colorFormat(in <-chan lineInfo) <-chan string {
 			}
 			out <- str
 		}
-		defer close(out)
 	}()
 
 	return out
@@ -143,6 +143,7 @@ func colorFormat(in <-chan lineInfo) <-chan string {
 func underlineFormat(in <-chan lineInfo) <-chan string {
 	out := make(chan string)
 	go func() {
+		defer close(out)
 		for li := range in {
 			// print the originl line first
 			str := fmt.Sprintf("%v (%v) ", li.filename, li.lineNum)
@@ -159,7 +160,6 @@ func underlineFormat(in <-chan lineInfo) <-chan string {
 			}
 			out <- str
 		}
-		defer close(out)
 	}()
 
 	return out
