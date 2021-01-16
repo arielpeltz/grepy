@@ -1,4 +1,4 @@
-package example.com;
+package com.example;
 
 import net.sourceforge.argparse4j.ArgumentParsers;
 import net.sourceforge.argparse4j.impl.Arguments;
