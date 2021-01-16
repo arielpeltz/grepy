@@ -6,3 +6,4 @@ grepy.iml
 .classpath
 .settings/
 .vscode/
+golang/grepy

@@ -31,6 +31,10 @@ func parseArgs() error {
 	underline := flag.Bool("underline", false, "Highlight the matches with '^' under the line")
 	color := flag.Bool("color", false, "Highlights the matches in color")
 	machine := flag.Bool("machine", false, "Print in machine format [file name]:[line number]:[match text]")
+	flag.Usage = func() {
+		fmt.Fprintf(flag.CommandLine.Output(), "Usage of %s [options] <regex> [filename ...]:\n", os.Args[0])
+		flag.PrintDefaults()
+	}
 	flag.Parse()
 
 	switch len(flag.Args()) {
